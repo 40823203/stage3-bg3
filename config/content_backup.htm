@@ -139,7 +139,7 @@ else:
 <p>主體</p>
 <p><img caption="false" height="475" src="/images/彈珠檯組合圖.png" width="500"/></p>
 <p>擊球機構</p>
-<p><img alt="" height="369" src="/images/擊球機構.png" width="500"/></p>
+<p><img alt="" height="485" src="/images/發球機構.png" width="500"/></p>
 <p>往復機構</p>
 <p><img alt="" height="379" src="/images/往復機構.png" width="500"/></p>
 <h2>迷宮</h2>
@@ -152,6 +152,31 @@ else:
 <p><img alt="" height="312" src="/images/旋轉機構.png" width="500"/></p>
 <p>旋轉軸</p>
 <p><img alt="" height="559" src="/images/軸.png" width="500"/></p>
+<p></p>
+<p>第二版</p>
+<p>迷宮</p>
+<p><span>零件下載：</span><a href="https://drive.google.com/drive/folders/1ewOJRg8MjwNb6bn8DSWCqORYuA_rh5VT?usp=sharing">點我</a><span>.</span></p>
+<p><span>組合圖：</span></p>
+<p><span><img alt="" height="318" src="/images/螢幕擷取畫面 (90).png" width="500"/></span></p>
+<p><span>迷宮主體：</span></p>
+<p><span><img alt="" height="309" src="/images/螢幕擷取畫面 (94).png" width="500"/></span></p>
+<p><span>第二層支架：</span></p>
+<p><span><img alt="" height="327" src="/images/螢幕擷取畫面 (93).png" width="500"/></span></p>
+<p><span>第三層支架：</span></p>
+<p><span><img alt="" height="329" src="/images/螢幕擷取畫面 (92).png" width="500"/></span></p>
+<p><span>桿子四個(用來連接支架的)：</span></p>
+<p><span><img alt="" height="326" src="/images/螢幕擷取畫面 (91).png" width="500"/></span></p>
+<p><span>風扇機構：</span></p>
+<p><span><img alt="" height="319" src="/images/螢幕擷取畫面 (95).png" width="500"/></span></p>
+<p><span>風扇連接桿：</span></p>
+<p><span><img alt="" height="267" src="/images/螢幕擷取畫面 (98).png" width="500"/></span></p>
+<p><span>滑板機構：</span></p>
+<p><span><img alt="" height="288" src="/images/螢幕擷取畫面 (97).png" width="500"/></span></p>
+<p><span>連接滑板機構：</span></p>
+<p><span><img alt="" height="316" src="/images/螢幕擷取畫面 (96).png" width="500"/></span></p>
+<p><span></span></p>
+<p></p>
+<p>=======</p>
 <h2>火車</h2>
 <p><a href="/downloads/stage-3 蒸氣火車 0521.7z">全部壓縮擋(stl)</a></p>
 <p>火車的主體</p>
@@ -176,11 +201,78 @@ else:
 <p><span><img alt="" height="333" src="/images/火車0521.png" width="500"/></span></p>
 <h1>直播影片</h1>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="338" src="//www.youtube.com/embed/sH2QMcHNTIU" title="YouTube video player" width="600"></iframe></p>
-<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/26xQmaEDBzI" title="YouTube video player" width="560"></iframe></p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="338" src="//www.youtube.com/embed/ieQEChlieB8" title="YouTube video player" width="600"></iframe></p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/26xQmaEDBzI" title="YouTube video player" width="560"></iframe><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="338" src="//www.youtube.com/embed/ieQEChlieB8" title="YouTube video player" width="600"></iframe></p>
+<p></p>
 <h1>模擬</h1>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+<h2>彈珠檯模擬</h2>
+<p>stage3模擬，但模擬過程中，一開始的擊球機構沒控制好的話會把球彈到後面去，這邊還需要修改一下，這次是用lua的程式碼下去，可以用鍵盤控制，分別是q、p、a、;、z、.。</p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/UeFtFcbUtLI" title="YouTube video player" width="560"></iframe></p>
+<p></p>
+<pre class="brush:lua;auto-links:false;toolbar:false" contenteditable="false">import sim as vrep
+import math
+import random
+import time
+import keyboard
+ 
+print ('Start')
+ 
+# Close eventual old connections
+vrep.simxFinish(-1)
+# Connect to V-REP remote server
+clientID = vrep.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
+  
+if clientID !=-1:
+    print ('Connected to remote API server')
+   
+    res = vrep.simxAddStatusbarMessage(
+        clientID, "40823222",
+        vrep.simx_opmode_oneshot)
+          
+    if res not in (vrep.simx_return_ok, vrep.simx_return_novalue_flag):
+        print("Could not add a message to the status bar.")
+          
+    opmode = vrep.simx_opmode_oneshot_wait
+     
+    vrep.simxStartSimulation(clientID, opmode)
+    ret,shaft1=vrep.simxGetObjectHandle(clientID,"joint1",opmode)
+    ret,shaft2=vrep.simxGetObjectHandle(clientID,"joint2",opmode)
+    ret,shaft3=vrep.simxGetObjectHandle(clientID,"joint3",opmode)
+
+    while True:
+        if keyboard.is_pressed("q"):
+            vrep.simxSetJointTargetPosition(clientID,shaft1,-200,opmode)
+            print("q")
+            
+        if keyboard.is_pressed("p"):
+            vrep.simxSetJointTargetPosition(clientID,shaft1,200,opmode)
+            print("p")
+            
+        if keyboard.is_pressed("a"):
+            vrep.simxSetJointTargetPosition(clientID,shaft2,90,opmode)
+            print("a")
+
+        if keyboard.is_pressed(";"):
+            vrep.simxSetJointTargetPosition(clientID,shaft2,0,opmode)
+            print(";")
+            
+        if keyboard.is_pressed("z"):
+            vrep.simxSetJointTargetPosition(clientID,shaft3,90,opmode)
+            print("z")
+
+        if keyboard.is_pressed("."):
+            vrep.simxSetJointTargetPosition(clientID,shaft3,0,opmode)
+            print(".")            
+else:
+    print ('Failed connecting to  remote API server')
+    print ('End')</pre>
+<p></p>
+<p>if keyboard.is_pressed("q"):<br/> vrep.simxSetJointTargetPosition(clientID,shaft1,-200,opmode)</p>
+<p>假設說按鍵按q的話，shaft1的旋轉軸會移動角度到-200度。</p><h1>W15</h1>
+=======
+<p>5555555</p>
 <h1>W15</h1>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 43a66de97a57952603ea4aa878ae3dd625b7eaae
 <h2>影片整理</h2>
 <p>影片1</p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/IKOGwoJ2HLk" title="YouTube video player" width="560"></iframe></p>
@@ -221,6 +313,26 @@ else:
 <p><span><img caption="false" height="28" src="/images/chrome_J4e8oQ81J3.png" width="150"/></span></p>
 <p><span>此為兩種比較圖</span></p>
 <p><span><img alt="" height="216" src="/images/chrome_RSy2CeH5Vz.png" width="200"/><img alt="" height="251" src="/images/chrome_90UKNUzJEY.png" width="200"/></span></p>
-<p></p>
-<p></p>
-<p></p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="338" src="//www.youtube.com/embed/eIZuz1XCd0w" title="YouTube video player" width="600"></iframe></p>
+<p><img alt="" height="138" src="/images/3.PNG" width="300"/></p>
+<p>特定的線性函數不是幾何，有一個表達式E</p>
+<p>旋轉q1沿x方向平移a1；旋轉q2，由a2在x方向進行平移，如果展開這個，全部相乘</p>
+<p>一起轉變得到此表達式，表示尾端姿態的矩陣</p>
+<p><img alt="" height="66" src="/images/4.PNG" width="300"/></p>
+<p>分解x與y座標</p>
+<p><img alt="" height="56" src="/images/5.PNG" width="300"/></p>
+<p>平方X和Y方程式後兩兩相加可得知角度q2</p>
+<p><img alt="" height="138" src="/images/6.PNG" width="300"/></p>
+<p><img alt="" height="148" src="/images/7.PNG" width="300"/></p>
+<p>製作後的方程式:</p>
+<p><img alt="" height="68" src="/images/8.PNG" width="300"/></p>
+<p>此為已知方程式:</p>
+<p><img alt="" height="109" src="/images/9.PNG" width="300"/></p>
+<p>只考慮y的方程式，可以確定a、b、c值，一旦知道這些，那麼就可以有q1的方程式</p>
+<p><img alt="" height="40" src="/images/11.PNG" width="300"/></p>
+<p><img alt="" height="45" src="/images/12.PNG" width="300"/></p>
+<p>將前面得知地此式，帶入q1進行簡化</p>
+<p><img alt="" height="51" src="/images/13.PNG" width="300"/></p>
+<p>即可得此式</p>
+<p><img alt="" height="60" src="/images/14.PNG" width="300"/></p>
+<p>======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; 1adb32d0ef62bdf1b9851bfb00b5ec8ef2b5cd72</p>
