@@ -2,7 +2,7 @@
         <head>
         <title>stage3-bg3</title>
         <meta charset="utf-8">
-<meta property="head" content="H3">
+<meta property="head" content="H2">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/fonts/icomoon/style.css">
@@ -134,28 +134,67 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content">W9 << <a href='W9.html'>Previous</a> <a href='Stage2.html'>Next</a> >> Stage2<br /><h1>Stage1</h1>
-<p><strong>bg7</strong></p>
-<p>主題:三爪夾頭</p>
-<p>原理<br/>夾頭底座的齒條和齒盤導軌嚙合,齒盤的斜面與斜 齒輪嚙合,當斜齒輪轉動時,帶動齒盤轉動,齒盤 背面的導軌也跟著轉動,讓夾頭底座的齒條跟著導 軌向中心移動,進而夾持工件。</p>
-<p>繪製零件:40823212</p>
-<p>程式模擬:40823236</p>
-<p><strong>bg12</strong></p>
-<p>主題:<span>鋁罐壓扁機</span></p>
-<p>原理:利用直線運動機構分為精確直線運動機構和近似直線運動機構兩類。其中精確直線運動機構的設計思想主要有兩種：一種是利用幾何中的反演變換，把連杆末端的圓弧路徑反演為直線，用機械反演器可以完成這一功能；另一種則是通過兩個不平行的連杆結構，把路徑限制在兩個平面的交線。近似直線運動機構則是通過多個杆件實現自由度為1的連接，調整杆件的長度使得一點的運動軌跡中包含一段近似直的線段。</p>
-<p>繪製零件:40823203</p>
-<p>程式模擬:40823202</p>
-<p><strong>bg19</strong></p>
-<p><span>主題:格鬥機器人</span></p>
-<p><span>原理:彈射機器人，他的問題是攻擊破壞性低，很難直接將對手擊殺，只能讓對手憑重力下來把自己摔壞或把對手丟進OUT區。彈射主要攻擊方式壓縮氣體沖入汽缸，汽缸快速反應，彈射板才能彈起來</span></p>
-<p>繪製人員:40823219、40823231</p>
-<p>程式模擬:40823219、40823231</p>
-<p><strong>bg22</strong></p>
-<p><span>主題:自動磨豆機</span></p>
-<p><span>原理<br/>利用輾壓研磨原理，讓咖啡豆在兩塊圓錐鐵中輾壓研磨，錐鐵的距離決定咖啡粉的粗細程度，錐鐵間的距離愈近，粉末愈細；反之，粉末愈粗。</span></p>
-<p>繪製組員:40823244 </p>
-<p>程式模擬:40823222 </p>
-<br />W9 << <a href='W9.html'>Previous</a> <a href='Stage2.html'>Next</a> >> Stage2</div>
+    <div id="tipue_search_content">彈珠檯模擬 << <a href='彈珠檯模擬.html'>Previous</a> <a href='W15.html'>Next</a> >> W15<br /><h1>火車模擬</h1>
+<p><a href="./../downloads/stage3 train.ttt">coppeliasim 場景檔</a></p>
+<p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/UaGLcyiS1HA" title="YouTube video player" width="560"></iframe></p>
+<p><strong>程式碼:</strong></p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">import sim as vrep
+import math
+import random
+import time
+import keyboard
+  
+print ('Start')
+  
+# Close eventual old connections
+vrep.simxFinish(-1)
+# Connect to V-REP remote server
+clientID = vrep.simxStart('192.168.1.110', 19997, True, True, 5000, 5)
+   
+if clientID !=-1:
+    print ('Connected to remote API server')
+    
+    res = vrep.simxAddStatusbarMessage(
+        clientID, "all start",
+        vrep.simx_opmode_oneshot)
+           
+    if res not in (vrep.simx_return_ok, vrep.simx_return_novalue_flag):
+        print("Could not add a message to the status bar.")
+           
+    opmode = vrep.simx_opmode_oneshot_wait
+      
+    vrep.simxStartSimulation(clientID, opmode)
+    ret,wheel1=vrep.simxGetObjectHandle(clientID,"wheel_1",opmode)
+    ret,wheel2=vrep.simxGetObjectHandle(clientID,"wheel_2",opmode)
+    ret,wheel3=vrep.simxGetObjectHandle(clientID,"wheel_3",opmode)
+    ret,wheel4=vrep.simxGetObjectHandle(clientID,"wheel_4",opmode)
+ 
+    while True:
+        if keyboard.is_pressed("g"):
+            vrep.simxSetJointTargetVelocity(clientID,wheel1,20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel2,20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel3,20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel4,20,opmode)
+            print("go")
+             
+        if keyboard.is_pressed("r"):
+            vrep.simxSetJointTargetVelocity(clientID,wheel1,-20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel2,-20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel3,-20,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel4,-20,opmode)
+            print("back")
+             
+        if keyboard.is_pressed("s"):
+            vrep.simxSetJointTargetVelocity(clientID,wheel1,0,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel2,0,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel3,0,opmode)
+            vrep.simxSetJointTargetVelocity(clientID,wheel4,0,opmode)
+            print("stop")
+         
+else:
+    print ('Failed connecting to  remote API server')
+    print ('End')</pre>
+<br />彈珠檯模擬 << <a href='彈珠檯模擬.html'>Previous</a> <a href='W15.html'>Next</a> >> W15</div>
         
     <!-- footer -->
       <div class="container">
